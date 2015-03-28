@@ -1,3 +1,4 @@
+from __future__ import division
 import math
 import numpy as np
 import sys
@@ -5,9 +6,7 @@ import sys
 cimport cython
 cimport numpy as np
 
-# TODO make sure all divisions generate floats
-
-class GroupDict(dict):
+class _GroupDict(dict):
     def __getitem__(self, key):
         if key not in self:
             self[key] = []
@@ -31,7 +30,7 @@ def load_community(input_file):
     return np.array(clusters)
 
 def load_community_groups(input_file):
-    clusters_groups = GroupDict()
+    clusters_groups = _GroupDict()
     clusters = []
     with open(input_file, 'r') as fin:
         for line in fin:
@@ -43,7 +42,7 @@ def load_community_groups(input_file):
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def get_min_a_ci(graph, np.ndarray[np.int_t , ndim=1] clusters, int ci):
+def _get_min_a_ci(graph, np.ndarray[np.int_t , ndim=1] clusters, int ci):
     cdef int a_ci, a_non_ci, node, neighbor_sum
     a_ci = 0
     a_non_ci = 0
@@ -59,7 +58,7 @@ def get_min_a_ci(graph, np.ndarray[np.int_t , ndim=1] clusters, int ci):
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def get_cut_edges_a(graph, ci_nodes, 
+def _get_cut_edges_a(graph, ci_nodes, 
         np.ndarray[np.int_t , ndim=1] clusters, int ci):
     cdef int sum_cut_edge_a, node, neighbor
     sum_cut_edge_a = 0
@@ -78,11 +77,11 @@ def conductance(graph,
     cdef double min_a_ci, cut_a_ci
     conductances = []
     for ci in clusters_groups:
-        min_a_ci = get_min_a_ci(graph, clusters, ci)
-        cut_a_ci = get_cut_edges_a(graph, clusters_groups[ci], clusters, ci)
+        min_a_ci = _get_min_a_ci(graph, clusters, ci)
+        cut_a_ci = _get_cut_edges_a(graph, clusters_groups[ci], clusters, ci)
         if min_a_ci > 0:
             conductances.append([len(clusters_groups[ci]),
-                cut_a_ci/float(min_a_ci)])
+                cut_a_ci/min_a_ci])
         
     return conductances
 
@@ -113,7 +112,7 @@ def ri(np.ndarray[np.int_t , ndim=1] real,
                 else:
                     tn += 1 # true negative
 
-    return float(tp+tn)/float(tp+fn+fp+tn)
+    return (tp+tn)/(tp+fn+fp+tn)
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
