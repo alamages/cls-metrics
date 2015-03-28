@@ -146,10 +146,6 @@ def nmi(np.ndarray[np.int_t, ndim=1] real,
         probcl[real_cluster] += 1
         probinter[alg_cluster][real_cluster] += 1
 
-    # NOTE in python3 by default division of int returns floats
-    # in python2 you need to either cast with float() or 
-    # import division from future
-
     for i in range(probc_size):
         probc[i] = probc[i] / nodes_size
 
