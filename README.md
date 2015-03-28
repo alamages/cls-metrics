@@ -20,13 +20,13 @@ The code works for both python2 and python3
 Data
 ---------------
 
-The code supports reads undirected unweighted graphs. The input graph must be provided in this format:
+The code supports undirected unweighted graphs. The input graph must be provided in this format:
 
 [node\_id] [neighbor\_id1] [neighbor\_id2] ....
 
-The node ids must in an increasing sequence starting from index 1 up to n (where n is the number of nodes). Same with the neighbor ids.
+The node ids must appear in an increasing sequence starting from index 1 up to n (where n is the number of nodes). Same with the neighbor ids.
 
-Same for the community/cluster files the format is:  
+Same for the community/cluster files the node ids must appear in an increasing sequence, the format is:  
 
 [node\_id] [community\_id]
 
