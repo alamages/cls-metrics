@@ -82,7 +82,8 @@ def conductance(graph,
         if min_a_ci > 0:
             conductances.append([len(clusters_groups[ci]),
                 cut_a_ci/min_a_ci])
-        
+    
+    # return for each cluster its size and its conductance value
     return conductances
 
 #---------- RI/NMI -----------#
