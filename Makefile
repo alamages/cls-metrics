@@ -1,6 +1,6 @@
 all: cythonize
 
-cythonize: fast_metrics.pyx
+cythonize: clustering_metrics.pyx
 	python setup.py build_ext --inplace
 
 clean:
